@@ -1,0 +1,22 @@
+{
+    "choices": [
+        {
+            "finish_reason": "length",
+            "index": 0,
+            "message": {
+                "content": ", there was a young girl named Alice who fell down a rabbit hole and found herself in a whimsical and magical world. As she explored this world, she encountered all sorts of strange creatures like a talking caterpillar, a grinning Cheshire Cat",
+                "role": "assistant"
+            }
+        }
+    ],
+    "created": 1716492246,
+    "id": "chatcmpl-9S8KkVxRmLpL1pCknUaEL3fu0I3Dc",
+    "model": "gpt-35-turbo",
+    "object": "chat.completion",
+    "system_fingerprint": null,
+    "usage": {
+        "completion_tokens": 50,
+        "prompt_tokens": 23,
+        "total_tokens": 73
+    }
+}

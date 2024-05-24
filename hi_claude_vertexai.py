@@ -17,7 +17,7 @@ print(f"MODEL: {MODEL}")
 
 client = AnthropicVertex(region=REGION, project_id=PROJECT_ID)
 
-message = client.messages.create(
+response = client.messages.create(
     model=MODEL,
     max_tokens=100,
     messages=[
@@ -27,4 +27,25 @@ message = client.messages.create(
         }
     ],
 )
-print(message)
+
+# print(response)
+
+if hasattr(response, 'choices'):    # OpenAI completion API returns a list of choices
+    query_response = response.choices[0].message.content
+
+elif hasattr(response, 'content'):  # Anthropic messaging API returns a content object
+    query_response = response.content[0].text
+else:
+    query_response = None
+
+llm_model = response.model if hasattr(response, 'model') else MODEL
+
+input_tokens = response.usage.input_tokens if hasattr(response, 'usage') else 0
+output_tokens = response.usage.input_tokens if hasattr(response, 'usage') else 0
+economic_unit = input_tokens + output_tokens
+
+print(f"Response: {query_response}")
+print(f"Model: {llm_model}")
+print(f"Input Tokens: {input_tokens}")
+print(f"Output Tokens: {output_tokens}")
+print(f"Tokens: {economic_unit}")

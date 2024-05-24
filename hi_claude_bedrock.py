@@ -18,7 +18,7 @@ client = AnthropicBedrock(
     aws_region="us-east-1",
 )
 
-message = client.messages.create(
+response = client.messages.create(
     model="anthropic.claude-3-sonnet-20240229-v1:0",  # "anthropic.claude-3-haiku-20240307-v1:0",
     max_tokens=256,
     messages=[
@@ -28,4 +28,25 @@ message = client.messages.create(
         }
     ],
 )
-print(message)
+
+# print(response)
+
+if hasattr(response, 'choices'):    # OpenAI completion API returns a list of choices
+    query_response = response.choices[0].message.content
+
+elif hasattr(response, 'content'):  # Anthropic messaging API returns a content object
+    query_response = response.content[0].text
+else:
+    query_response = None
+
+llm_model = response.model if hasattr(response, 'model') else MODEL
+
+input_tokens = response.usage.input_tokens if hasattr(response, 'usage') else 0
+output_tokens = response.usage.input_tokens if hasattr(response, 'usage') else 0
+economic_unit = input_tokens + output_tokens
+
+print(f"Response: {query_response}")
+print(f"Model: {llm_model}")
+print(f"Input Tokens: {input_tokens}")
+print(f"Output Tokens: {output_tokens}")
+print(f"Tokens: {economic_unit}")

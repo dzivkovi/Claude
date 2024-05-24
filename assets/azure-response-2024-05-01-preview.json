@@ -1,0 +1,64 @@
+{
+    "choices": [
+        {
+            "content_filter_results": {
+                "hate": {
+                    "filtered": false,
+                    "severity": "safe"
+                },
+                "self_harm": {
+                    "filtered": false,
+                    "severity": "safe"
+                },
+                "sexual": {
+                    "filtered": false,
+                    "severity": "safe"
+                },
+                "violence": {
+                    "filtered": false,
+                    "severity": "safe"
+                }
+            },
+            "finish_reason": "length",
+            "index": 0,
+            "logprobs": null,
+            "message": {
+                "content": ", there was a magical kingdom ruled by a wise king and a kind queen. The kingdom was full of lush forests, sparkling rivers, and majestic mountains, and the people who lived there were happy and content. One day, a powerful sorcerer arrived",
+                "role": "assistant"
+            }
+        }
+    ],
+    "created": 1716480571,
+    "id": "chatcmpl-9S5IRFssNrohaw4JA20idgBNy4wnf",
+    "model": "gpt-35-turbo",
+    "object": "chat.completion",
+    "prompt_filter_results": [
+        {
+            "prompt_index": 0,
+            "content_filter_results": {
+                "hate": {
+                    "filtered": false,
+                    "severity": "safe"
+                },
+                "self_harm": {
+                    "filtered": false,
+                    "severity": "safe"
+                },
+                "sexual": {
+                    "filtered": false,
+                    "severity": "safe"
+                },
+                "violence": {
+                    "filtered": false,
+                    "severity": "safe"
+                }
+            }
+        }
+    ],
+    "system_fingerprint": null,
+    "usage": {
+        "completion_tokens": 50,
+        "prompt_tokens": 23,
+        "total_tokens": 73
+    }
+}

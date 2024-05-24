@@ -1,0 +1,63 @@
+{
+    "choices": [
+        {
+            "content_filter_results": {
+                "hate": {
+                    "filtered": false,
+                    "severity": "safe"
+                },
+                "self_harm": {
+                    "filtered": false,
+                    "severity": "safe"
+                },
+                "sexual": {
+                    "filtered": false,
+                    "severity": "safe"
+                },
+                "violence": {
+                    "filtered": false,
+                    "severity": "safe"
+                }
+            },
+            "finish_reason": "length",
+            "index": 0,
+            "message": {
+                "content": ", there was a kind and generous king who ruled over a prosperous kingdom. He was loved by all his people and was known for his fairness and wisdom. However, one day an evil sorcerer cast a spell on the king, making him cruel and",
+                "role": "assistant"
+            }
+        }
+    ],
+    "created": 1716491816,
+    "id": "chatcmpl-9S8DoMgd5ZR8D66MRTKnZUlTgL5FN",
+    "model": "gpt-35-turbo",
+    "object": "chat.completion",
+    "prompt_filter_results": [
+        {
+            "prompt_index": 0,
+            "content_filter_results": {
+                "hate": {
+                    "filtered": false,
+                    "severity": "safe"
+                },
+                "self_harm": {
+                    "filtered": false,
+                    "severity": "safe"
+                },
+                "sexual": {
+                    "filtered": false,
+                    "severity": "safe"
+                },
+                "violence": {
+                    "filtered": false,
+                    "severity": "safe"
+                }
+            }
+        }
+    ],
+    "system_fingerprint": null,
+    "usage": {
+        "completion_tokens": 50,
+        "prompt_tokens": 23,
+        "total_tokens": 73
+    }
+}

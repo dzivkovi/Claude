@@ -1,0 +1,39 @@
+{
+    "candidates": [
+        {
+            "content": {
+                "parts": [
+                    {
+                        "text": "**Artificial Intelligence (AI)** is the simulation of human intelligence processes by machines, especially computer systems. Here's how AI works:\n\n**1. Data Collection:**\n* AI systems gather vast amounts of data from various sources, such as sensors, databases, and user interactions.\n\n**2. Data Preparation:**\n* The data is cleaned, structured, and preprocessed to make it usable for training AI models.\n\n**3. Model Building:**\n* AI algorithms (e.g., machine learning, deep learning) are used to create mathematical models that can learn patterns and make predictions from the data.\n\n**4. Training:**\n* The models are trained on large datasets, iteratively adjusting their parameters to minimize errors and improve accuracy.\n\n**5. Evaluation:**\n* The trained models are evaluated on unseen data to assess their performance and identify weaknesses.\n\n**6. Deployment:**\n* The models are integrated into applications or deployed as standalone tools.\n\n**AI Techniques:**\n\n* **Machine Learning:** Computers learn patterns and make predictions from data without explicit programming.\n* **Deep Learning:** A type of machine learning that uses artificial neural networks with multiple layers to process data.\n* **Natural Language Processing (NLP):** AI systems that understand and generate human language.\n* **Computer Vision:** AI systems that can interpret images and videos.\n* **Expert Systems:** AI systems that imitate human expertise in specific domains.\n\n**How AI Makes Predictions:**\n\n* **Inductive Learning:** AI models generalize patterns from training data to make predictions on new data.\n* **Bayesian Inference:** AI models use probability distributions to estimate the likelihood of events based on evidence.\n* **Decision Trees:** AI models create hierarchical structures to classify data and make predictions.\n* **Neural Networks:** AI models use interconnected nodes to learn complex relationships and make predictions.\n\n**Applications of AI:**\n\n* Natural language processing\n* Computer vision\n* Robotics\n* Predictive analytics\n* Decision-making\n* Fraud detection\n* Healthcare diagnosis\n* Autonomous vehicles"
+                    }
+                ],
+                "role": "model"
+            },
+            "finishReason": "STOP",
+            "index": 0,
+            "safetyRatings": [
+                {
+                    "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+                    "probability": "NEGLIGIBLE"
+                },
+                {
+                    "category": "HARM_CATEGORY_HATE_SPEECH",
+                    "probability": "NEGLIGIBLE"
+                },
+                {
+                    "category": "HARM_CATEGORY_HARASSMENT",
+                    "probability": "NEGLIGIBLE"
+                },
+                {
+                    "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+                    "probability": "NEGLIGIBLE"
+                }
+            ]
+        }
+    ],
+    "usageMetadata": {
+        "promptTokenCount": 4,
+        "candidatesTokenCount": 417,
+        "totalTokenCount": 421
+    }
+}
