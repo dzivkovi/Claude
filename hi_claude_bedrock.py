@@ -1,8 +1,30 @@
 import os
+from typing import Any
 from dotenv import load_dotenv
 from anthropic import AnthropicBedrock
 
 load_dotenv()
+
+
+def extract_response_details(llm_response: Any, client_name: str) -> tuple:
+    """
+    Extracts the response details from the LLM API response object.
+    """
+    if client_name == 'azure' or client_name == 'azure_openai' or client_name == 'openai':
+        query_response = llm_response.choices[0].message.content.strip() if hasattr(llm_response, 'choices') else None
+        llm_model = llm_response.model if hasattr(llm_response, 'model') else 'Unknown'
+        economic_unit = llm_response.usage.total_tokens if hasattr(llm_response, 'usage') else 0
+    elif client_name == 'anthropic' or client_name == 'claude' or client_name == 'bedrock':
+        query_response = llm_response.content[0].text if hasattr(llm_response, 'content') else None
+        llm_model = llm_response.model if hasattr(llm_response, 'model') else 'Unknown'
+        if hasattr(llm_response, 'usage'):
+            economic_unit = llm_response.usage.input_tokens + llm_response.usage.input_tokens
+        else:
+            economic_unit = 0
+    else:
+        query_response = llm_model = 'Unknown'
+        economic_unit = 0
+    return query_response, llm_model, economic_unit
 
 
 client = AnthropicBedrock(
@@ -31,22 +53,8 @@ response = client.messages.create(
 
 # print(response)
 
-if hasattr(response, 'choices'):    # OpenAI completion API returns a list of choices
-    query_response = response.choices[0].message.content
-
-elif hasattr(response, 'content'):  # Anthropic messaging API returns a content object
-    query_response = response.content[0].text
-else:
-    query_response = None
-
-llm_model = response.model if hasattr(response, 'model') else MODEL
-
-input_tokens = response.usage.input_tokens if hasattr(response, 'usage') else 0
-output_tokens = response.usage.input_tokens if hasattr(response, 'usage') else 0
-economic_unit = input_tokens + output_tokens
+query_response, llm_model, economic_unit = extract_response_details(response, "anthropic")
 
 print(f"Response: {query_response}")
 print(f"Model: {llm_model}")
-print(f"Input Tokens: {input_tokens}")
-print(f"Output Tokens: {output_tokens}")
 print(f"Tokens: {economic_unit}")
