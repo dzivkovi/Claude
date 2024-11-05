@@ -4,7 +4,7 @@ Tools to validate and troubleshoot AWS Bedrock access for Anthropic's Claude mod
 
 ## Problem Statement
 
-The same code works differently across platforms:
+The same code should work across platforms where Claude models ans inference endpoints are hosted:
 
 ```python
 # Works ✓ - Direct Anthropic API
@@ -41,9 +41,9 @@ python hi_claude_bedrock.py  # Rate limit errors
 
 ### AWS Credentials via Granted (Recommended)
 
-[Granted](https://docs.commonfate.io/granted/getting-started) provides secure AWS credential management:
+[Granted](https://www.granted.dev/) provides secure AWS credential management:
 
-1. Install Granted:
+1. Install [Granted](https://docs.commonfate.io/granted/getting-started):
 
    ```bash
    # macOS
@@ -54,20 +54,47 @@ python hi_claude_bedrock.py  # Rate limit errors
    iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/common-fate/granted/main/install.ps1'))
    ```
 
-2. Configure AWS profiles in `~/.aws/config`:
-
-   ```ini
-   [profile your-profile-name]
-   region = us-east-1
-   output = json
-   ```
-
-3. Use assume command:
+2. Use `assume` command:
 
    ```bash
    assume
    # Select profile using arrows or type to filter
    # Sets AWS environment variables automatically
+
+3. Set AWS environment variables
+
+   If `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` are not set by the assume command:
+
+   ```bash
+   # Check current AWS environment variables
+   env|grep AWS_
+   AWS_PROFILE=profile-name
+   AWS_DEFAULT_REGION=us-east-1
+   AWS_REGION=us-east-1
+   ```
+
+   You will need to assume the role (e.g. "rad-bedrock-role") that can access Anthropic Claude inference endpoints in AWS Bedrock:
+
+   ```bash
+   $ aws sts get-caller-identity --query "Account" --output text
+   123456789012
+
+   $ acct=$(aws sts get-caller-identity --query "Account" --output text)
+
+   $ eval $(aws sts assume-role --role-arn arn:aws:iam::${acct}:role/rad-bedrock-role --role-session-name "bedrock-client" | jq -r '"export AWS_ACCESS_KEY_ID=" + .Credentials.AccessKeyId, "export AWS_SECRET_ACCESS_KEY=" + .Credentials.SecretAccessKey, "export AWS_SESSION_TOKEN=" + .Credentials.SessionToken')
+
+   $ env|grep AWS_
+   AWS_PROFILE=profile-name
+   AWS_DEFAULT_REGION=us-east-1
+   AWS_REGION=us-east-1
+   AWS_SECRET_ACCESS_KEY=value-one
+   AWS_ACCESS_KEY_ID=value-two
+   AWS_SESSION_TOKEN=value-three
+
+   $ python hi_claude_bedrock.py
+   Response: Hello! It's nice to meet you. How can I assist you today?
+   Model: claude-3-sonnet-20240229
+   Tokens: 20
    ```
 
 ## Tools Provided
