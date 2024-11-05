@@ -4,7 +4,7 @@ Tools to validate and troubleshoot AWS Bedrock access for Anthropic's Claude mod
 
 ## Problem Statement
 
-The same code should work across platforms where Claude models ans inference endpoints are hosted:
+The same code should work across platforms where Claude models and inference endpoints are hosted:
 
 ```python
 # Works ✓ - Direct Anthropic API
