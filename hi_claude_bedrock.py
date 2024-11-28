@@ -44,13 +44,14 @@ client = AnthropicBedrock(
     aws_region="us-east-1",
 )
 
+prompt = "Who is Prime Minister of Canada? (in one sentence)"
 response = client.messages.create(
     model=ANTHROPIC_MODEL,
     max_tokens=256,
     messages=[
         {
             "role": "user",
-            "content": "Hello, Claude"
+            "content": prompt
         }
     ],
 )
