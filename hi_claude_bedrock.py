@@ -31,7 +31,7 @@ def extract_response_details(llm_response: Any, llm_provider: str) -> tuple:
         query_response = llm_response.content[0].text if hasattr(llm_response, 'content') else None
         llm_model = llm_response.model if hasattr(llm_response, 'model') else 'Unknown'
         if hasattr(llm_response, 'usage'):
-            economic_unit = llm_response.usage.input_tokens + llm_response.usage.input_tokens
+            economic_unit = llm_response.usage.input_tokens + llm_response.usage.output_tokens
         else:
             economic_unit = 0
     else:
@@ -53,7 +53,7 @@ client = AnthropicBedrock(
     aws_region=ANTHROPIC_REGION,
 )
 
-prompt = "Who is Prime Minister of Canada? (in one sentence)"
+prompt = "Who is Prime Minister of Canada?"
 response = client.messages.create(
     model=ANTHROPIC_MODEL,
     max_tokens=256,
