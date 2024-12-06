@@ -15,11 +15,16 @@ LLM_PROVIDER = os.getenv("LLM_PROVIDER", "anthropic")
 # "anthropic.claude-3-5-sonnet-20241022-v2:0"
 ANTHROPIC_MODEL = os.getenv("ANTHROPIC_MODEL", "anthropic.claude-3-sonnet-20240229-v1:0")
 
+<<<<<<< HEAD
+
+def extract_response_details(llm_response: Any, client_name: str) -> tuple:
+=======
 AWS_REGION = os.getenv("AWS_REGION", "us-east-1")
 ANTHROPIC_REGION = os.getenv("ANTHROPIC_REGION", AWS_REGION)
 
 
 def extract_response_details(llm_response: Any, llm_provider: str) -> tuple:
+>>>>>>> 6900fefad12d6162bfac258cd4771f96c1232e1a
     """
     Extracts the response details from the LLM API response object.
     """
