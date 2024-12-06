@@ -10,6 +10,7 @@ load_dotenv()
 # "anthropic.claude-3-5-sonnet-20241022-v2:0"
 ANTHROPIC_MODEL = os.getenv("ANTHROPIC_MODEL", "anthropic.claude-3-sonnet-20240229-v1:0")
 
+
 def extract_response_details(llm_response: Any, client_name: str) -> tuple:
     """
     Extracts the response details from the LLM API response object.
@@ -22,7 +23,7 @@ def extract_response_details(llm_response: Any, client_name: str) -> tuple:
         query_response = llm_response.content[0].text if hasattr(llm_response, 'content') else None
         llm_model = llm_response.model if hasattr(llm_response, 'model') else 'Unknown'
         if hasattr(llm_response, 'usage'):
-            economic_unit = llm_response.usage.input_tokens + llm_response.usage.input_tokens
+            economic_unit = llm_response.usage.input_tokens + llm_response.usage.output_tokens
         else:
             economic_unit = 0
     else:
