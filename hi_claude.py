@@ -8,12 +8,12 @@ client = anthropic.Anthropic(
 
 MODEL = "claude-3-opus-20240229"
 
-prompt = "Generate a  trivia question and an answer"
+prompt = "Generate a trivia question and an answer"
 response = client.messages.create(
     model=MODEL,
     max_tokens=1024,
     messages=[
-        {"role": "user", "content": "Hello, Claude"}
+        {"role": "user", "content": prompt}
     ]
 )
 # print(response)
