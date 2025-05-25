@@ -286,6 +286,167 @@ For optimal cross-platform compatibility, add this `.gitattributes` file to your
 
 This file helps maintain consistent line endings across platforms and should remain in your repository.
 
+## Performance Tuning WSL2
+
+WSL2 performance can significantly impact development workflows, especially for AI/ML workloads and Python scripts. By default, WSL2 uses conservative resource allocation that may not utilize your hardware effectively.
+
+### Understanding Current WSL2 Resource Usage
+
+Before optimizing, assess your current system resources and WSL2 allocation:
+
+#### Check System Hardware (PowerShell)
+
+```powershell
+# Check total system RAM
+systeminfo | findstr "Total Physical Memory"
+
+# Check CPU specifications (modern PowerShell command)
+Get-CimInstance -ClassName Win32_Processor | Select-Object Name, NumberOfCores, NumberOfLogicalProcessors | Format-Table
+
+# Note: The deprecated 'wmic' command should be avoided in favor of Get-CimInstance
+```
+
+#### Check WSL2 Current Allocation
+
+```powershell
+# View WSL distributions and versions
+wsl --list --verbose
+
+# Check current WSL memory usage
+wsl -e free -h
+
+# Check if .wslconfig exists
+if (Test-Path "$env:USERPROFILE\.wslconfig") { 
+    Get-Content "$env:USERPROFILE\.wslconfig" 
+} else { 
+    "No .wslconfig file found - using defaults" 
+}
+```
+
+### Default WSL2 Resource Limits
+
+Without a `.wslconfig` file, WSL2 uses these defaults:
+
+- **Memory**: 50% of total system RAM (can cause performance issues)
+- **Processors**: All available CPU cores
+- **Swap**: 25% of system RAM
+- **Disk**: 1TB maximum (dynamically allocated)
+
+These defaults often lead to:
+
+- Insufficient memory for large datasets/AI workloads
+- Competition with Windows for system resources
+- Poor I/O performance due to conservative settings
+
+### Creating an Optimized .wslconfig
+
+Create or edit `C:\Users\YourUsername\.wslconfig` with hardware-appropriate settings:
+
+```ini
+[wsl2]
+# Memory allocation (adjust based on your total RAM)
+# For 32GB system: allocate 20GB (leaves 12GB for Windows)
+# For 16GB system: allocate 10GB (leaves 6GB for Windows)
+memory=20GB
+
+# CPU cores (leave some for Windows responsiveness)
+# For 24-core system: use 20 cores (leaves 4 for Windows)
+# For 8-core system: use 6 cores (leaves 2 for Windows)
+processors=20
+
+# Swap space (increase for memory-intensive workloads)
+# Set to 25-50% of allocated memory
+swap=8GB
+
+# Performance optimizations
+localhostForwarding=true
+nestedVirtualization=false
+
+# Memory management for better performance
+kernelCommandLine=cgroup_no_v1=all systemd.unified_cgroup_hierarchy=1
+
+# Network performance
+dhcp=true
+firewall=true
+```
+
+### Hardware-Specific Recommendations
+
+**High-End Systems (32GB+ RAM, 16+ cores):**
+
+```ini
+memory=24GB
+processors=12
+swap=8GB
+```
+
+**Mid-Range Systems (16GB RAM, 8+ cores):**
+
+```ini
+memory=10GB
+processors=6
+swap=4GB
+```
+
+**Entry-Level Systems (8GB RAM, 4+ cores):**
+
+```ini
+memory=5GB
+processors=3
+swap=2GB
+```
+
+### Applying .wslconfig Changes
+
+After creating or modifying `.wslconfig`:
+
+```powershell
+# Shutdown all WSL instances
+wsl --shutdown
+
+# Restart your default WSL distribution
+wsl
+
+# Verify new resource allocation
+wsl -e free -h
+```
+
+### Performance Validation
+
+Compare before/after performance:
+
+```bash
+# Inside WSL - Check memory allocation
+free -h
+
+# Test Python/AI workload performance
+# Run your memory-intensive scripts and compare execution times
+```
+
+**Expected improvements:**
+
+- Faster Python script execution (especially data processing)
+- Reduced swapping during memory-intensive operations
+- Better responsiveness during AI/ML model training
+- Improved file I/O performance
+
+### Troubleshooting Performance Issues
+
+If performance doesn't improve:
+
+1. **Check actual allocation**: `wsl -e free -h` should show your configured memory
+2. **Monitor resource usage**: Use `htop` or `top` inside WSL during workloads
+3. **Verify Windows has sufficient resources**: Leave at least 25% of RAM for Windows
+4. **Consider disk I/O**: Store frequently accessed files in Linux filesystem (`/home/`) rather than Windows mounts (`/mnt/c/`)
+
+### File System Performance Tips
+
+For optimal performance:
+
+- **Store projects in Linux filesystem**: `/home/username/projects/` instead of `/mnt/c/Users/`
+- **Use WSL2 native paths**: Avoid Windows path translations when possible
+- **Enable file system metadata**: Add `metadata` option to `/etc/wsl.conf` for better permission handling
+
 ## VSCode Integration
 
 For the best experience with VSCode and WSL:
