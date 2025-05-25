@@ -13,7 +13,8 @@ llm_provider = os.getenv("LLM_PROVIDER", "anthropic")
 # Also try
 # "anthropic.claude-3-haiku-20240307-v1:0"
 # "anthropic.claude-3-5-sonnet-20241022-v2:0"
-anthropic_model = os.getenv("ANTHROPIC_MODEL", "anthropic.claude-3-sonnet-20240229-v1:0")
+# "us.anthropic.claude-3-7-sonnet-20250219-v1:0"
+anthropic_model = os.getenv("ANTHROPIC_MODEL", "us.anthropic.claude-3-5-haiku-20241022-v1:0")
 
 aws_region = os.getenv("AWS_REGION", "us-east-1")
 anthropic_region = os.getenv("ANTHROPIC_REGION", aws_region)

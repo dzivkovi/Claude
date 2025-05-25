@@ -4,7 +4,7 @@ from anthropic import AnthropicBedrock
 
 load_dotenv()
 
-ANTHROPIC_MODEL = os.getenv("ANTHROPIC_MODEL", "anthropic.claude-3-sonnet-20240307-v1:0")
+ANTHROPIC_MODEL = os.getenv("ANTHROPIC_MODEL", "us.anthropic.claude-sonnet-4-20250514-v1:0")
 
 
 def print_styled_stream(chunk_text: str, chunk_number: int = None):
