@@ -31,13 +31,16 @@ This section addresses common Git issues when working with repositories in WSL a
 
 ### Git User Configuration
 
-When working with Git in WSL, you'll need to set up your user identity for commits:
+When working with Git in WSL, you can automatically sync your Windows Git user configuration:
 
 ```bash
-# Configure your Git user information
-git config user.email "your.email@example.com"  # Use your actual email
-git config user.name "Your Name"                # Use your actual name
-```
+# Import Git user email and name from Windows
+WIN_GIT_EMAIL=$(powershell.exe -Command "git config --global user.email" | tr -d '\r')
+WIN_GIT_NAME=$(powershell.exe -Command "git config --global user.name" | tr -d '\r')
+
+# Apply Windows Git configuration to WSL
+git config --global user.email "$WIN_GIT_EMAIL"
+git config --global user.name "$WIN_GIT_NAME"
 
 If you have authentication issues when pushing to repositories, configure Git to use the Windows credential manager:
 
@@ -55,23 +58,9 @@ When accessing Windows-based repositories through WSL's `/mnt/` paths, Git may i
 1. **Line endings**: Windows uses CRLF (`\r\n`) while Linux uses LF (`\n`)
 2. **File permissions**: WSL tracks executable bits that Windows Git ignores 
 
-### Quick Fix Script
+#### Quick Fix
 
-Run this script when working with a repository in WSL:
-
-```bash
-# Navigate to the repository root
-cd /mnt/c/Users/your/path/to/repository
-
-# Run the WSL Git fix script
-./scripts/wsl-git-fix.sh
-```
-
-This script configures Git for WSL compatibility and resets any false modifications.
-
-### Manual Configuration
-
-If you prefer to understand what's happening, here are the key commands:
+Execute the following commands in your WSL terminal to resolve these issues:
 
 ```bash
 # Configure line ending behavior (only convert to LF when committing)
@@ -88,7 +77,7 @@ git config core.fileMode false
 git reset --hard
 ```
 
-### Recommended `.gitattributes` File
+#### Recommended `.gitattributes` File
 
 For optimal cross-platform compatibility, add this `.gitattributes` file to your repository:
 
