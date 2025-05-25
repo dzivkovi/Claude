@@ -6,7 +6,8 @@ client = anthropic.Anthropic(
     api_key=os.environ.get("ANTHROPIC_API_KEY")
 )
 
-MODEL = "claude-3-opus-20240229"
+# MODEL = "claude-3-opus-20240229"
+MODEL = "claude-opus-4-20250514"
 
 prompt = "Generate a trivia question and an answer"
 response = client.messages.create(
