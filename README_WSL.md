@@ -190,6 +190,10 @@ To use AI tools like Claude Code effectively with WSL, you'll need to set up you
 
 These setup steps create the foundation needed for AI-powered development tools to effectively analyze and modify your codebase.
 
+### Advanced Claude Code Configuration
+
+For enterprise users with AWS Bedrock access, see [Claude Code AWS Bedrock Configuration](CLAUDE_CODE_BEDROCK.md) for switching from Anthropic SaaS to your organization's AWS environment. This includes model discovery, configuration scripts, and troubleshooting for Claude 4 and Claude 3.7 Sonnet models.
+
 ## Setting Up Git for WSL Development
 
 This section addresses common Git issues when working with repositories in WSL and provides solutions for a streamlined development experience.
