@@ -230,6 +230,66 @@ jupyter notebook bedrock/aws_bedrock_troubleshooting.ipynb
 - **Model Selection**: Claude 4 Sonnet currently has better availability than Claude 3.7 Sonnet
 - **Caching**: Disabled for Bedrock to avoid compatibility issues
 
+## CLI Tools for Development Workflow
+
+### Why Claude Code Recommends Installing `gh` CLI
+
+Claude (from Anthropic) is optimized to work with the `gh` CLI for interacting with GitHub repositories. When installed, Claude can:
+
+- Create and manage GitHub Issues
+- Open and comment on Pull Requests (PRs)
+- Read repo metadata and issue comments
+- Automate project workflows via scripting or prompt instructions
+
+Source: [Claude Code Best Practices — Anthropic](https://www.anthropic.com/engineering/claude-code-best-practices)
+
+> "Claude knows how to use the gh CLI to interact with GitHub for creating issues, opening pull requests, reading comments, and more."
+
+If `gh` is not installed, Claude will fall back to the GitHub API or a custom MCP server, which is more complex to set up.
+
+### Installing the `gh` CLI (GitHub CLI)
+
+On Ubuntu-based WSL2 systems, install `gh` using GitHub's official APT repository:
+
+```bash
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-key C99B11DEB97541F0
+sudo apt-add-repository https://cli.github.com/packages
+sudo apt update
+sudo apt install gh
+```
+
+Then authenticate with:
+
+```bash
+gh auth login
+```
+
+This enables Claude to use `gh` directly in your projects.
+
+### Installing `glab` (GitLab CLI) 
+
+To mirror the GitHub-style installation for GitLab projects, install the GitLab CLI:
+
+```bash
+curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg \
+  | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
+
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] \
+  https://cli.github.com/packages stable main" \
+  | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+
+sudo apt update
+sudo apt install glab
+```
+
+Then authenticate with:
+
+```bash
+glab auth login
+```
+
+Note: This uses GitHub's keyring infrastructure to fetch `glab`, which may not always be up to date. For the latest `glab`, consider installing from Snap or the [WakeMeOps APT mirror](https://github.com/upciti/wakemeops#glab).
+
 ## Security Best Practices
 
 - **Never commit AWS credentials** to version control
