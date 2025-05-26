@@ -31,8 +31,8 @@ def validate_notebook(path: Path) -> tuple[bool, str]:
         return False, f"Error validating {path}: {str(e)}"
 
 
-def clean_notebook(notebook_path: Path) -> bool:
-    """Clean all outputs from a notebook"""
+def clean_notebook(notebook_path: Path, check_only: bool = False) -> bool:
+    """Clean all outputs from a notebook or check if it has outputs"""
     try:
         # Validate first
         is_valid, error_msg = validate_notebook(notebook_path)
@@ -44,24 +44,35 @@ def clean_notebook(notebook_path: Path) -> bool:
         with open(notebook_path, encoding='utf-8') as f:
             nb = nbformat.read(f, as_version=4)
 
-        # Track if notebook was modified
+        # Track if notebook has outputs
         had_outputs = False
 
         for cell in nb.cells:
             if cell.cell_type == 'code':
                 if cell.get('outputs') or cell.get('execution_count'):
                     had_outputs = True
-                cell['outputs'] = []
-                cell['execution_count'] = None
+                    if check_only:
+                        break
+                if not check_only:
+                    cell['outputs'] = []
+                    cell['execution_count'] = None
 
-        if had_outputs:
-            with open(notebook_path, 'w', encoding='utf-8') as f:
-                nbformat.write(nb, f)
-            print(f"✓ Cleaned {notebook_path}")
-            return str(notebook_path)
+        if check_only:
+            if had_outputs:
+                print(f"❌ {notebook_path} contains outputs/execution counts")
+                return str(notebook_path)
+            else:
+                print(f"✅ {notebook_path} is clean")
+                return None
         else:
-            print(f"- No outputs to clean in {notebook_path}")
-            return None
+            if had_outputs:
+                with open(notebook_path, 'w', encoding='utf-8') as f:
+                    nbformat.write(nb, f)
+                print(f"✓ Cleaned {notebook_path}")
+                return str(notebook_path)
+            else:
+                print(f"- No outputs to clean in {notebook_path}")
+                return None
 
     except Exception as e:  # pylint: disable=broad-except
         print(f"Error processing {notebook_path}: {str(e)}")
@@ -97,17 +108,26 @@ def main():
     has_errors = False
 
     for nb in notebooks:
-        result = clean_notebook(nb)
+        result = clean_notebook(nb, check_only=args.check)
         if result:
             cleaned_files.append(result)
         elif result is None:  # Error occurred
             has_errors = True
 
     # Print summary
-    if cleaned_files:
-        print("\nCLEANED_FILES:")
-        for f in cleaned_files:
-            print(f)
+    if args.check:
+        if cleaned_files:
+            print(f"\n🚫 FOUND {len(cleaned_files)} notebooks with outputs!")
+            print("Run 'python clean_notebooks.py' to clean them.")
+            return 1  # Exit with error code to block commit
+        else:
+            print("\n✅ All notebooks are clean")
+            return 0
+    else:
+        if cleaned_files:
+            print("\nCLEANED_FILES:")
+            for f in cleaned_files:
+                print(f)
 
     return 1 if has_errors else 0
 
