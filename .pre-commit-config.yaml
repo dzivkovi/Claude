@@ -1,0 +1,11 @@
+# Pre-commit configuration
+repos:
+  - repo: local
+    hooks:
+      - id: clean-notebooks
+        name: Clean Jupyter notebook outputs
+        entry: python clean_notebooks.py --check
+        language: system
+        files: \.ipynb$
+        pass_filenames: true
+        stages: [commit]
