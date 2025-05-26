@@ -19,6 +19,10 @@ pip install -r requirements.txt
 
 # Install minimal Bedrock-only dependencies
 pip install -r requirements-bedrock.txt
+
+# Copy environment template and configure
+cp .env.template .env
+# Edit .env with your API keys and settings
 ```
 
 ### Running Tests
@@ -38,6 +42,15 @@ python hi_claude_bedrock_streaming.py
 # Run comprehensive Bedrock diagnostics
 python bedrock/check_bedrock_access.py
 python bedrock/check_bedrock_quotas.py
+```
+
+### Code Quality
+```bash
+# Run linting (uses .flake8 config)
+flake8 .
+
+# Run type checking with pylint (uses .pylintrc config)
+pylint *.py bedrock/*.py
 ```
 
 ### Notebook Management
@@ -89,3 +102,14 @@ Models use different naming patterns across platforms:
 - Cross-platform compatibility testing using identical prompts
 - Token counting validation across different response formats
 - Region and quota validation for Bedrock deployments
+
+### Environment Configuration
+- Use `.env.template` as starting point for local configuration
+- Environment variables control model selection and API endpoints
+- `LLM_PROVIDER` variable switches between anthropic/bedrock/vertex modes
+- Region settings affect both AWS and Vertex AI deployments
+
+### Git Commit Guidelines
+- Do not attribute Claude as co-author in commit messages
+- Keep commit messages technical and concise
+- Focus on describing why code changes were made, rather than how
