@@ -144,11 +144,24 @@ To use AI tools like Claude Code effectively with WSL, you'll need to set up you
    - See also: [Microsoft Node.js on WSL guide](https://learn.microsoft.com/en-us/windows/dev-environment/javascript/nodejs-on-wsl)
 
 5. **Access Windows Environment Variables**
-   - Add this to your `~/.bashrc` to import the ANTHROPIC_API_KEY:
+   - Add this to your `~/.bashrc` to import the environment variables:
 
      ```bash
-     # Import ANTHROPIC_API_KEY from Windows environment
-     export ANTHROPIC_API_KEY=$(powershell.exe -Command "\$env:ANTHROPIC_API_KEY" | tr -d '\r')
+     # Map env vars from Windows into WSL – edit this list as needed
+     VARS=(
+       AWS_REGION
+       AWS_SECRET_ACCESS_KEY
+       AWS_ACCESS_KEY_ID
+       AZURE_API_VERSION
+       ANTHROPIC_API_KEY
+       GEMINI_API_KEY
+       AZURE_API_BASE
+       AZURE_API_KEY
+     )
+     for v in "${VARS[@]}"; do
+       export "$v"="$(powershell.exe -NoProfile -Command "echo \$Env:$v" | tr -d '\r')" \
+         && echo "✔ $v imported"
+     done
      ```
 
    - Apply the changes:
